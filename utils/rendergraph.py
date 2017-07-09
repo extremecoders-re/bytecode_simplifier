@@ -29,7 +29,7 @@ def render_graph(bb_graph, filename):
     Renders a basic block graph to file
 
     :param bb_graph: The Graph to render
-     :type bb_graph: networkx.DiGraph
+    :type bb_graph: networkx.DiGraph
     """
     graph = pydotplus.Dot(graph_type='digraph', rankdir='TB')
     entryblock = nx.get_node_attributes(bb_graph, 'isEntry').keys()[0]
