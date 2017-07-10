@@ -12,6 +12,12 @@ You need to have the following packages pre-installed:
 Both of the packages are `pip` installable. Additionally, make sure graphviz executable is in your path for `pydotplus` to work.
 `pydotplus` is required only for drawing graphs and if you do not want this feature you can comment out the `render_graph` calls in `deobfuscate` function in file [deobfuscator.py](deobfuscator.py)
 
+## Statutory Warning 
+
+PjOrion obfuscates the original file and introduces several wrapper layers on top of it. The purpose of these layers is simply to (sort of) decrypt the next inner layer and execute it via an `EXEC_STMT` instruction. Hence you CANNOT use this tool as-is on an obfuscated file. First you would need to remove the wrapper layers and get hold of the actual obfuscated code object. Then you can marshal the obfuscated code to disk and run this tool on it which should hopefully give you back the deobfuscated code.
+
+As of now refer to [this](https://0xec.blogspot.com/2017/03/hacking-cpython-virtual-machine-to.html) blog post for ideas on how to do this. This will be documented in detail later.
+
 ## Implementation details
 
 ### Analysis
