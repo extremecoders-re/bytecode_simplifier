@@ -25,7 +25,6 @@ def verify_graph(bb_graph):
             logger.error('The entry point basic block has an in degree of {}'.format(i_degree_entry))
             raise Exception
 
-
         for bb in bb_graph.nodes_iter():
             o_degree = bb_graph.out_degree(bb)
             # A basic block can have 0,1 or 2 successors

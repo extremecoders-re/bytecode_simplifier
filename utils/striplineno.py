@@ -3,6 +3,7 @@ import sys
 import marshal
 import types
 
+
 def process(co):
     co_constants = []
     for const in co.co_consts:
@@ -16,14 +17,13 @@ def process(co):
                           co.co_filename, co.co_name, 1, '')
 
 
-
 def main():
     print sys.argv[1]
     fn = sys.argv[1]
     inf = open(fn, 'rb')
     header = inf.read(4)
     assert header == '\x03\xf3\x0d\x0a'
-    inf.read(4) # Discard
+    inf.read(4)  # Discard
     co = marshal.load(inf)
     inf.close()
     outf = open('noline.pyc', 'wb')
@@ -32,5 +32,5 @@ def main():
     outf.close()
 
 
-if __name__  == '__main__':
+if __name__ == '__main__':
     main()

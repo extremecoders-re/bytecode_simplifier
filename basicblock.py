@@ -4,6 +4,7 @@ class BasicBlock:
     Execution begins from the top and ends at the bottom. There can be no branching
     in between.
     """
+
     def __init__(self):
         self.address = 0
         self.instructions = []

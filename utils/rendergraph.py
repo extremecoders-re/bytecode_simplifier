@@ -14,7 +14,6 @@ def render_bb(bb, is_entry, is_terminal):
             dot += str(ins.arg)
         dot += '\l'
 
-
     if not is_entry and not is_terminal:
         return pydotplus.Node(hex(id(bb)), label=dot, shape='box', fontname='Consolas')
 

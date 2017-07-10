@@ -77,6 +77,5 @@ class Instruction:
         else:
             return chr(self.opcode) + chr(self.arg & 0xFF) + chr((self.arg >> 8) & 0xFF)
 
-
     def __str__(self):
         return '{} {} {}'.format(self.opcode, self.mnemonic, self.arg)

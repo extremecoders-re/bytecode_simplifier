@@ -313,7 +313,7 @@ class Disassembler:
 
                     # RETURN_VALUE
                     elif ins.is_ret():
-                        nx.set_node_attributes(self.bb_graph, 'isTerminal', {bb:True})
+                        nx.set_node_attributes(self.bb_graph, 'isTerminal', {bb: True})
                         # Does not have any sucessors
                         assert len(nextInsAddr) == 0
 

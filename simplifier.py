@@ -138,7 +138,7 @@ class Simplifier:
 
                         # If bb is a terminal node, mark the mergedBB as terminal too
                         if bb in nx.get_node_attributes(self.bb_graph, 'isTerminal').keys():
-                            nx.set_node_attributes(self.bb_graph, 'isTerminal', {mergedBB:True})
+                            nx.set_node_attributes(self.bb_graph, 'isTerminal', {mergedBB: True})
 
                         # Remove the edge
                         self.bb_graph.remove_edge(mergedBB, bb)
