@@ -92,7 +92,7 @@ The assembly process in itself consists of sub-stages:
 ## Example usage
 
 ```
-$ python --ifile=ifile=obfuscated.pyc --ofile=deobfuscated.pyc
+$ python --ifile=obfuscated.pyc --ofile=deobfuscated.pyc
 
 INFO:__main__:Opening file obfuscated.pyc
 INFO:__main__:Input pyc file header matched
