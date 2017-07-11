@@ -74,7 +74,7 @@ def deobfuscate(codestring):
     simplifier.eliminate_forwarders()
     render_graph(simplifier.bb_graph, 'after_forwarder.svg')
     simplifier.merge_basic_blocks()
-    logger.info('Simplication of basic blocks completed.')
+    logger.info('Simplification of basic blocks completed.')
     simplified_graph = simplifier.bb_graph
     render_graph(simplified_graph, 'after.svg')
     logger.info('Beginning verification of simplified basic block graph...')
