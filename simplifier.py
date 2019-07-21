@@ -27,7 +27,7 @@ class Simplifier:
         # Loop until no basic block can be eliminated any more
         while bb_eliminated:
             bb_eliminated = False
-            for bb in self.bb_graph.nodes_iter():
+            for bb in self.bb_graph.nodes.iterkeys():
                 # Must have a single instruction
                 if len(bb.instructions) == 1:
                     ins = bb.instructions[0]
@@ -97,7 +97,7 @@ class Simplifier:
 
     def merge_basic_blocks(self):
         """
-        Merges a basic block into its predecessor iff the basic block has exactly one predecessor
+        Merges a basic block into its predecessor if the basic block has exactly one predecessor
         and the predecessor has this basic block as its lone successor
     
         :param bb_graph: A graph of basic blocks
@@ -113,14 +113,13 @@ class Simplifier:
         # Loop until no basic block can be eliminated any more
         while bb_merged:
             bb_merged = False
-            for bb in self.bb_graph.nodes_iter():
+            for bb in self.bb_graph.nodes.iterkeys():
                 # The basic block should not have any xrefs and must have exactly one predecessor
                 if not bb.has_xrefs_to and self.bb_graph.in_degree(bb) == 1:
-                    predecessorBB = self.bb_graph.predecessors(bb)[0]
+                    predecessorBB = self.bb_graph.predecessors(bb).next()
 
                     # Predecessor basic block must have exactly one successor
-                    if self.bb_graph.out_degree(predecessorBB) == 1 and self.bb_graph.successors(predecessorBB)[
-                        0] == bb:
+                    if self.bb_graph.out_degree(predecessorBB) == 1 and self.bb_graph.successors(predecessorBB).next() == bb:
                         # The predecessor block will be the merged block
                         mergedBB = predecessorBB
 
@@ -138,7 +137,7 @@ class Simplifier:
 
                         # If bb is a terminal node, mark the mergedBB as terminal too
                         if bb in nx.get_node_attributes(self.bb_graph, 'isTerminal').keys():
-                            nx.set_node_attributes(self.bb_graph, 'isTerminal', {mergedBB: True})
+                            nx.set_node_attributes(self.bb_graph, {mergedBB: True}, 'isTerminal')
 
                         # Remove the edge
                         self.bb_graph.remove_edge(mergedBB, bb)

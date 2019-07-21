@@ -1,5 +1,7 @@
 # Bytecode Simplifier
 
+*(Modified by @abel1502 for EXTENDED_ARG opcode support and minor fixes)*
+
 Bytecode simplifier is a tool to deobfuscate PjOrion protected python scripts. 
 This is a complete rewrite of my older tool [PjOrion Deobfuscator](https://github.com/extremecoders-re/PjOrion-Deobfuscator)
 

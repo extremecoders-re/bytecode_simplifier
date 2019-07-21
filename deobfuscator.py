@@ -33,7 +33,7 @@ def find_oep(insBytes):
 
         # Second instruction is intentionally invalid, on execution
         # control transfers to exception handler
-        assert dec.decode_at(3).is_opcode_valid() == False
+        assert dec.decode_at(ins.size).is_opcode_valid() == False
 
         assert dec.decode_at(exc_handler).mnemonic == 'POP_TOP'
         assert dec.decode_at(exc_handler + 1).mnemonic == 'POP_TOP'
