@@ -50,6 +50,9 @@ class Simplifier:
                         if forwardedBB_in_edge_exists and forwarderBB_in_edge_exists:
                             continue
 
+                        if forwarderBB in nx.get_node_attributes(self.bb_graph,'isEntry').keys():
+                            nx.set_node_attributes(self.bb_graph, 'isEntry', {forwardedBB: True})
+
                         # Remove the edge between forwarder and forwarded
                         self.bb_graph.remove_edge(forwarderBB, forwardedBB)
 
