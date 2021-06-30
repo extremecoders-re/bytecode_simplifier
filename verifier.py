@@ -25,7 +25,7 @@ def verify_graph(bb_graph):
             logger.error('The entry point basic block has an in degree of {}'.format(i_degree_entry))
             raise Exception
 
-        for bb in bb_graph.nodes_iter():
+        for bb in bb_graph.nodes.iterkeys():
             o_degree = bb_graph.out_degree(bb)
             # A basic block can have 0,1 or 2 successors
             if o_degree > 2:
@@ -41,11 +41,14 @@ def verify_graph(bb_graph):
 
             # A basic block having out degree of 2, cannot have both out edge as of explicit type or implicit type
             if o_degree == 2:
-                o_edges = bb_graph.out_edges(bb, data=True)
-                if o_edges[0][2]['edge_type'] == 'explicit' and o_edges[1][2]['edge_type'] == 'explicit':
+                o_edges = bb_graph.out_edges(bb, data=True).__iter__()
+                o_edges_zero = o_edges.next()
+                o_edges_one = o_edges.next()
+                print o_edges
+                if o_edges_zero[2]['edge_type'] == 'explicit' and o_edges_one[2]['edge_type'] == 'explicit':
                     logger.error('Basic block {} has both out edges of explicit type'.format(hex(id(bb))))
                     raise Exception
-                if o_edges[0][2]['edge_type'] == 'implicit' and o_edges[1][2]['edge_type'] == 'implicit':
+                if o_edges_zero[2]['edge_type'] == 'implicit' and o_edges_one[2]['edge_type'] == 'implicit':
                     logger.error('Basic block {} has both out edges of implicit type'.format(hex(id(bb))))
                     raise Exception
 
@@ -54,7 +57,7 @@ def verify_graph(bb_graph):
             # If in degree is greater than zero
             if i_degree > 0:
                 numImplicitEdges = 0
-                for edge in bb_graph.in_edges_iter(bb, data=True):
+                for edge in bb_graph.in_edges(bb, data=True):
                     if edge[2]['edge_type'] == 'implicit':
                         numImplicitEdges += 1
 
@@ -64,7 +67,6 @@ def verify_graph(bb_graph):
 
             if i_degree == o_degree == 0:
                 logger.error('Orphaned block {} has no edges'.format(hex(id(bb))))
-
     except Exception as ex:
         print ex
         return False

@@ -66,6 +66,7 @@ class Assembler:
 
                         # Modify relative jump to absolute jump
                         if ins.mnemonic == 'JUMP_FORWARD':
+                            ins.mnemonic = 'JUMP_ABSOLUTE'
                             ins.opcode = dis.opmap['JUMP_ABSOLUTE']
 
                         # If instruction is a relative control transfer instruction
@@ -118,7 +119,7 @@ class Assembler:
         bb.b_seen = True
 
         # Recursively dfs on all out going explicit edges
-        for o_edge in self.bb_graph.out_edges_iter(bb, data=True):
+        for o_edge in self.bb_graph.out_edges(bb, data=True):
             # o_edge is a tuple (edge src, edge dest, edge attrib dict)
             if o_edge[2]['edge_type'] == 'explicit':
                 self.dfs(o_edge[1])
@@ -130,7 +131,7 @@ class Assembler:
                 self.dfs(ins.argval)
 
         # Recursively dfs on all out going implicit edges
-        for o_edge in self.bb_graph.out_edges_iter(bb, data=True):
+        for o_edge in self.bb_graph.out_edges(bb, data=True):
             # o_edge is a tuple (edge src, edge dest, edge attrib dict)
             if o_edge[2]['edge_type'] == 'implicit':
                 self.dfs(o_edge[1])
@@ -163,15 +164,12 @@ class Assembler:
                 if ins.opcode in dis.hasjabs:
                     # ins.argval is a BasicBlock
                     ins.arg = ins.argval.address
-                    # TODO
-                    # We do not generate EXTENDED_ARG opcode at the moment,
-                    # hence size of opcode argument can only be 2 bytes
-                    assert ins.arg <= 0xFFFF
+                    assert ins.arg <= 0xFFFFFFFF
                 elif ins.opcode in dis.hasjrel:
                     ins.arg = ins.argval.address - addr
                     # relative jump can USUALLY go forward
                     assert ins.arg >= 0
-                    assert ins.arg <= 0xFFFF
+                    assert ins.arg <= 0xFFFFFFFF
 
     def emit(self):
         logger.debug('Generating code...')

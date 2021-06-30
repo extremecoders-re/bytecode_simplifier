@@ -12,7 +12,9 @@ class Instruction:
 
         # Numeric argument to operation(if any), otherwise None
         self.arg = arg
-
+        
+        if size == 3 and arg >= 65536:
+            size = 6
         # The size of the instruction including the arguement
         self.size = size
 
@@ -74,8 +76,10 @@ class Instruction:
     def assemble(self):
         if self.size == 1:
             return chr(self.opcode)
-        else:
+        elif self.size == 3 and self.arg < 65536:
             return chr(self.opcode) + chr(self.arg & 0xFF) + chr((self.arg >> 8) & 0xFF)
+        else:
+            return chr(dis.opmap["EXTENDED_ARG"]) + chr((self.arg >> 16) & 0xFF) + chr((self.arg >> 24) & 0xFF) + chr(self.opcode) + chr(self.arg & 0xFF) + chr((self.arg >> 8) & 0xFF)
 
     def __str__(self):
         return '{} {} {}'.format(self.opcode, self.mnemonic, self.arg)
