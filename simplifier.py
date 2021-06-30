@@ -36,7 +36,7 @@ class Simplifier:
                         assert self.bb_graph.out_degree(bb) == 1
 
                         forwarderBB = bb
-                        forwardedBB = self.bb_graph.successors(bb)[0]
+                        forwardedBB = next(self.bb_graph.successors(bb))
 
                         # Check if forwardedBB has atleast one implicit in edge
                         forwardedBB_in_edge_exists = len(filter(lambda edge: edge[2]['edge_type'] == 'implicit',
@@ -54,7 +54,7 @@ class Simplifier:
                         self.bb_graph.remove_edge(forwarderBB, forwardedBB)
 
                         # Iterate over the predecessors of the forwarder
-                        for predecessorBB in self.bb_graph.predecessors(forwarderBB):
+                        for predecessorBB in list(self.bb_graph.predecessors(forwarderBB)):
                             # Get existing edge type
                             e_type = self.bb_graph.get_edge_data(predecessorBB, forwarderBB)['edge_type']
 
@@ -142,7 +142,7 @@ class Simplifier:
                         # Remove the edge
                         self.bb_graph.remove_edge(mergedBB, bb)
 
-                        for successorBB in self.bb_graph.successors(bb):
+                        for successorBB in list(self.bb_graph.successors(bb)):
                             # Get existing type
                             e_type = self.bb_graph.get_edge_data(bb, successorBB)['edge_type']
 
