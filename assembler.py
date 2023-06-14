@@ -1,6 +1,9 @@
 import logging
 
-import cStringIO
+try:
+    import cStringIO
+except:
+    from io import StringIO as cStringIO
 import networkx as nx
 import dis
 
