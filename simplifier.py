@@ -27,7 +27,7 @@ class Simplifier:
         # Loop until no basic block can be eliminated any more
         while bb_eliminated:
             bb_eliminated = False
-            for bb in self.bb_graph.nodes_iter():
+            for bb in self.bb_graph.nodes():
                 # Must have a single instruction
                 if len(bb.instructions) == 1:
                     ins = bb.instructions[0]
@@ -36,7 +36,7 @@ class Simplifier:
                         assert self.bb_graph.out_degree(bb) == 1
 
                         forwarderBB = bb
-                        forwardedBB = self.bb_graph.successors(bb)[0]
+                        forwardedBB = list(self.bb_graph.successors(bb))[0]
 
                         # Check if forwardedBB has atleast one implicit in edge
                         forwardedBB_in_edge_exists = len(filter(lambda edge: edge[2]['edge_type'] == 'implicit',
@@ -54,7 +54,7 @@ class Simplifier:
                         self.bb_graph.remove_edge(forwarderBB, forwardedBB)
 
                         # Iterate over the predecessors of the forwarder
-                        for predecessorBB in self.bb_graph.predecessors(forwarderBB):
+                        for predecessorBB in list(self.bb_graph.predecessors(forwarderBB)):
                             # Get existing edge type
                             e_type = self.bb_graph.get_edge_data(predecessorBB, forwarderBB)['edge_type']
 
@@ -99,7 +99,7 @@ class Simplifier:
         """
         Merges a basic block into its predecessor iff the basic block has exactly one predecessor
         and the predecessor has this basic block as its lone successor
-    
+
         :param bb_graph: A graph of basic blocks
         :type bb_graph: nx.DiGraph
         :returns: The simplified graph of basic blocks
@@ -113,14 +113,13 @@ class Simplifier:
         # Loop until no basic block can be eliminated any more
         while bb_merged:
             bb_merged = False
-            for bb in self.bb_graph.nodes_iter():
+            for bb in self.bb_graph.nodes():
                 # The basic block should not have any xrefs and must have exactly one predecessor
                 if not bb.has_xrefs_to and self.bb_graph.in_degree(bb) == 1:
-                    predecessorBB = self.bb_graph.predecessors(bb)[0]
+                    predecessorBB = list(self.bb_graph.predecessors(bb))[0]
 
                     # Predecessor basic block must have exactly one successor
-                    if self.bb_graph.out_degree(predecessorBB) == 1 and self.bb_graph.successors(predecessorBB)[
-                        0] == bb:
+                    if self.bb_graph.out_degree(predecessorBB) == 1 and list(self.bb_graph.predecessors(bb))[0] == bb:
                         # The predecessor block will be the merged block
                         mergedBB = predecessorBB
 

@@ -241,7 +241,7 @@ class Disassembler:
         logger.debug('{} basic blocks created'.format(self.bb_graph.number_of_nodes()))
 
     def find_bb_by_address(self, address):
-        for bb in self.bb_graph.nodes_iter():
+        for bb in self.bb_graph.nodes():
             if bb.address == address:
                 return bb
 
@@ -252,7 +252,7 @@ class Disassembler:
         """
         logger.debug('Constructing edges between basic blocks...')
 
-        for bb in self.bb_graph.nodes_iter():
+        for bb in self.bb_graph.nodes():
             offset = 0
 
             for idx in xrange(len(bb.instructions)):
@@ -313,7 +313,7 @@ class Disassembler:
 
                     # RETURN_VALUE
                     elif ins.is_ret():
-                        nx.set_node_attributes(self.bb_graph, 'isTerminal', {bb: True})
+                        nx.set_node_attributes(self.bb_graph, {bb: {'isTerminal': True}})
                         # Does not have any sucessors
                         assert len(nextInsAddr) == 0
 

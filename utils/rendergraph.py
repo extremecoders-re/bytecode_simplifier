@@ -36,7 +36,7 @@ def render_graph(bb_graph, filename):
 
     nodedict = {}
 
-    for bb in bb_graph.nodes_iter():
+    for bb in bb_graph.nodes():
         node = render_bb(bb, bb == entryblock, bb in returnblocks)
         if bb == entryblock:
             sub = pydotplus.Subgraph('sub', rank='source')
@@ -46,7 +46,7 @@ def render_graph(bb_graph, filename):
             graph.add_node(node)
         nodedict[bb] = node
 
-    for edge in bb_graph.edges_iter(data=True):
+    for edge in bb_graph.edges(data=True):
         src = nodedict[edge[0]]
         dest = nodedict[edge[1]]
         e_style = 'dashed' if edge[2]['edge_type'] == 'implicit' else 'solid'
