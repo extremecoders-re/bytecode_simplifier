@@ -1,0 +1,4 @@
+pefile 
+uncompyle6
+networkx 
+pydotplus

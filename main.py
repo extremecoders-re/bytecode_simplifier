@@ -49,11 +49,22 @@ def process(ifile, ofile):
     logger.info('Opening file ' + ifile)
     ifPtr = open(ifile, 'rb')
     header = ifPtr.read(8)
-    if not header.startswith('\x03\xF3\x0D\x0A'):
-        raise SystemExit('[!] Header mismatch. The input file is not a valid pyc file.')
+    if not header.startswith(b'\x03\xF3\x0D\x0A'):
+        print("Header mismatch. The input file is not a valid pyc file.")
+        while True:
+            user_input = input("Do you want to continue? (y/n): ")
+            if user_input.lower() == 'n':
+                raise SystemExit('[!] Header mismatch. The input file is not a valid pyc file.')
+            elif user_input.lower() == 'y':
+                break
+            else:
+                print("Invalid input. Please enter 'y' or 'n'.")
     logger.info('Input pyc file header matched')
     logger.debug('Unmarshalling file')
-    rootCodeObject = marshal.load(ifPtr)
+    try:
+        rootCodeObject = marshal.load(ifPtr)
+    except ValueError:
+        raise SystemExit('[!] Failed to unmarshal file. The input file is not a valid pyc file.')
     ifPtr.close()
     deob = parse_code_object(rootCodeObject)
     logger.info('Writing deobfuscated code object to disk')

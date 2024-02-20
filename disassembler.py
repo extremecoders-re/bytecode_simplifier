@@ -1,4 +1,7 @@
-import Queue
+try:
+    import Queue
+except:
+    import queue as Queue
 import logging
 import collections
 import dis

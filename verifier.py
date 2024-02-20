@@ -66,6 +66,6 @@ def verify_graph(bb_graph):
                 logger.error('Orphaned block {} has no edges'.format(hex(id(bb))))
 
     except Exception as ex:
-        print ex
+        print(ex)
         return False
     return True
