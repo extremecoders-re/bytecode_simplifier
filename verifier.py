@@ -25,7 +25,7 @@ def verify_graph(bb_graph):
             logger.error('The entry point basic block has an in degree of {}'.format(i_degree_entry))
             raise Exception
 
-        for bb in bb_graph.nodes_iter():
+        for bb in bb_graph.nodes():
             o_degree = bb_graph.out_degree(bb)
             # A basic block can have 0,1 or 2 successors
             if o_degree > 2:
@@ -54,7 +54,7 @@ def verify_graph(bb_graph):
             # If in degree is greater than zero
             if i_degree > 0:
                 numImplicitEdges = 0
-                for edge in bb_graph.in_edges_iter(bb, data=True):
+                for edge in bb_graph.in_edges(bb, data=True):
                     if edge[2]['edge_type'] == 'implicit':
                         numImplicitEdges += 1
 

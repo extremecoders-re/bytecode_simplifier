@@ -118,7 +118,7 @@ class Assembler:
         bb.b_seen = True
 
         # Recursively dfs on all out going explicit edges
-        for o_edge in self.bb_graph.out_edges_iter(bb, data=True):
+        for o_edge in self.bb_graph.out_edges(bb, data=True):
             # o_edge is a tuple (edge src, edge dest, edge attrib dict)
             if o_edge[2]['edge_type'] == 'explicit':
                 self.dfs(o_edge[1])
@@ -130,7 +130,7 @@ class Assembler:
                 self.dfs(ins.argval)
 
         # Recursively dfs on all out going implicit edges
-        for o_edge in self.bb_graph.out_edges_iter(bb, data=True):
+        for o_edge in self.bb_graph.out_edges(bb, data=True):
             # o_edge is a tuple (edge src, edge dest, edge attrib dict)
             if o_edge[2]['edge_type'] == 'implicit':
                 self.dfs(o_edge[1])
